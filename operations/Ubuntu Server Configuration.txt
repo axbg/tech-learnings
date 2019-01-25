@@ -1,0 +1,79 @@
+->	using WMWare Player
+->	using Ubuntu Server 16.04
+
+----------------------------------------------------------------
+
+
+Install Ubuntu 
+
+->	at virtual machine installation select "I will install operating system later"
+
+->	after virtual machine finishes installing, select "edit virtual machine settings", "cd/dvd" and select the .iso to be installed
+
+->	start the virtual machine
+
+->	install Ubuntu .iso
+
+->  create the partitions (manual)
+
+->	first: ext4, primary, bootable flags on
+
+->	second: primary, swap
+**can create up to 4 primary drives; the 5th one must be logical; 
+
+->	no automatic updates
+
+->  install openssh
+
+->  install GRUB loader
+
+->	finish install
+
+------------------------------------------------------------------
+
+
+Useful Commands
+
+->	ping example.com - to check internet connection
+->	ifconfig - details about the current internet connection
+->  ip a - newer alternative for ifconfig
+->	route -n - view gateway, genmask
+->	top - view the running processes, ranked by the resource consumption and other informations
+->	ps aux - view all the processes; alternative for ps -ef
+->	CTRL + R - search in the history of used commands
+->	df - view partitions and informations about them, without the swap partitions (df -h with human readable informations)
+->	(sudo) fdisk -l - informations about the user made partitions, including swap partitions
+->	du path-to-directory - informations about the size of a directory (du -h with human readable informations)
+->	ls
+->	pwd
+->	mkdir
+->	rm / rm -R
+->	touch
+->	mv
+->	lsb_release -a - informations about the OS version
+->  ls -alh - display informations about all the files in a folder, including the hidden ones
+
+--------------------------------------------------------------------
+
+
+Packages
+
+apt is the default repository for Ubuntu
+
+->	apt-get update - used to update the list with all the packages installed on the system, but doesn't install the newer versions
+->	apt-get upgrade - used to compare current packages with the remote ones and installs the newer versions
+
+
+install the htop package (sudo apt-get install htop)
+->	enables the htop command which is an improved version of top
+->	htop is used to view the processes from the system
+->	htop uses more resources than top
+
+uninstall the htop package (sudo apt-get remove htop)
+
+
+install the mc package (sudo apt-get install mc)
+->	mc is a find manager program used to navigate easier in the file system
+
+
+-----------------------------------------------------------------------

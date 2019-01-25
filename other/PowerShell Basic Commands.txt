@@ -1,4 +1,4 @@
-﻿#Clean console
+#Clean console
 cls
 clear
 

@@ -1,0 +1,20 @@
+PHP on Apache
+
+-> install php: sudo apt-get install php
+-> install mod php: sudo apt-get install libapache2-mod-php
+-> install sql module for php: sudo apt-get install php-mysql
+
+-> phpinfo(); - command to display informations about the installed php version in a php script
+	-> the same result can be obtain in CLI by running "php -i"
+
+----------------------------------------------------------------------------------
+
+-> install mysql "sudo apt-get install mysql-server"
+
+-> connect to mysql as root through CLI
+	-> sudo mysql -u root -p
+-----------------------------------------------------------------------------------
+
+-> install phpmyadmin
+	-> sudo apt-get install phpmyadmin
+

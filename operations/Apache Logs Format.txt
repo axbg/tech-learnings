@@ -1,0 +1,20 @@
+
+-> every a2en.. command creates a symlink
+	-> to explicitly create a symlink use "ln -s <from> <to>"
+
+-> tail -f <<nume_fisier>> - view the last lines of a file, with live update
+
+-------------------------------------------------------------------------------------------
+
+Change the way informations are displayed in access logs
+
+	-> go to 000-default.conf and check the default LogFormat (CustomLog <<location>> <<LogFormat>>)
+	-> go into "apache2.conf" and modify the default format to display the desired informations, using pre-defined identifiers
+		"%h" - IP
+		"%t" - Time
+		"\"%r\"" - Request
+		"%>s" - Status code
+		"%b" - Size of the objects returned 
+	-> you can also create your own template, name it and declare it as default in websites .conf (in sites-available)
+		-> CustomLog <<location>> <<own_template_name>>
+	->restart server to apply changes
