@@ -1,0 +1,192 @@
+ASP.NET Core Web Apps
+
+
+-> ASP.NET Core and ASP.NET MVC are different
+    -> ASP.NET Core is newer and it's cross-platform
+
+
+-> ASP.NET Core Project templates can be generated directly from Visual Studio
+
+
+-> ASP.NET Core is multi-threaded asynchronous so, in a way, it resembles node
+    -> async and await keywords are often used
+
+
+-> Creating and modifying configs
+    -> you can create an "appsettings.json" file inside the project and write down variables inside
+        -> those variables can be accessed following the next steps: 
+            1) Alter the Configure() method inside the Startup class by adding a IConfiguration parameter
+            2) use the configuration variable to access values in "appsettings.json"
+                ex: String ConfigValue = configuration["variable1"]
+
+        -> the variable value from the file can be replaced when running the application
+            ex: dotnet run Greeting="Hello"
+
+
+-> Creating and Injecting Custom Services
+    -> you can use custom Interfaces in the Configure() method by injecting them as parameters
+        -> you have to create a new Interface, a new class that implements the Interface
+
+        -> now you have to register the interface as a service so that .NET Core can access interface
+
+        -> to do that, inside the ConfigureServices method inside the Startup class write 
+            -> services.AddSingleton<ICustomInterface, CustomClass>();
+            -> services.AddScoped<>();
+
+
+-> Using middlewares
+    -> middlewares can be used in the Configure() method as a method invocation of the app object
+        ex: app.UseWelcomePage();
+
+    -> take care: the middlewares run in the exact order in which they're called
+        ex: if the first middleware responds to all requests, the second one will never be used
+
+    -> you can write a custom middleware using the "app.Use" method
+        ex:     app.Use(next =>
+                {
+                    return async context =>
+                    {
+                        if (context.Request.Path.Equals("/custom"))
+                        {
+                            await context.Response.WriteAsync("this is a custom middleware");
+                        }
+                        else
+                        {
+                            await next(context);
+                        }
+                    };
+                });
+
+    -> app.UseDeveloperExceptionPage();
+        -> it's a native pre-configured middleware which returns a page with details about the occurring exception (if one appears)
+
+
+-> Environment
+    -> the current environment can be set inside the launchSettings.json file
+
+    -> the environment settings can be accessed inside app using the "env" object
+
+
+-> Serving static files
+    -> every static file should be placed under the "wwwroot" directory
+
+    -> you can use a special middleware "app.UseStaticFiles()" and they will automatically be served on "url/filename"
+
+    -> you can use a special middleware "app.DefaultFiles()" and the app will set the context for files to be served
+        -> app.DefaultFiles() should be used before app.UseStaticFiles()
+
+
+-> Headers
+    -> to set headers inside a controller
+        ex: "context.Response.ContentType = "text/plain""
+
+
+-> Basic Controllers and Routing
+    -> to use the MVC controllers you have to register a service inside the ConfigureServices() method by adding services.AddMvc()
+
+    -> the framework only needs the first part of the name (ex: Home from HomeController)
+
+    -> to keep a clean directory structure, create a new "Controllers" directory inside the project
+        -> the framework will look, by default, in this directory
+
+    -> if you want to use default routes: app.UseMvcWithDefaultRoute()
+        ex: the default controller is called HomeController from the "Controllers" directory and can use routes such as Index
+        ex: public class HomeController
+            {
+                public String Index()
+                {
+                return "Hello from the home controller";
+                }
+            }
+
+    -> if you want to customize your routes: app.UseMvc(ConfigureRoutes)
+        -> ConfigureRoutes is a new method which can be generated using Visual Studio
+
+    -> inside the ConfigureRoutes method you can use the IRouteBuilder object to build.. routes
+        -> the followed pattern is: routeBuilder.MapRoute("Default", "{controller=controllerName}/{action=actionName}");
+            ex: routeBuilder.MapRoute("Default", "{controller=Home}/{action=Index}")
+        
+        -> a custom route can include parameters
+            -> routeBuilder.MapRoute("Default", "{controller=controllerName}/{action=actionName}/{id=idValue}");
+
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    -> by default, the Controller class name and method are used to determine the route 
+        -> routeBuilder.MapRoute("Test", "{controller=Generator}/{action=Generate}")
+            -> the associated route is "/generator/generate"
+
+    -> if you want to modify the route, you can use the Route annotation before class or before a particular method
+        ex: [Route("about")]
+
+    -> be careful that if you use an explicit route for a controller with more than one method, you have to either: 
+            1. define Routes for every method
+            2. define [Route("[controller]/[action]")] on the controller class
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
+
+
+-> MVC Derived Controllers
+    -> they inherit from the Controller class
+
+    -> they are the standard for a well-built controller
+
+    -> can access informations about the request and build complex response
+
+    -> response with an object: return ObjectResult(yourObject);
+
+    -> to render a view: return View(viewname);
+ 
+
+-> Views 
+    -> declared in the Views/ControllerName directory for a specific controller
+    -> if a view is accessed by many controllers, place it inside Views/Shared/ directory
+
+    -> views can receive parameters from the controllers that can be used inside the .cshtml files
+        ex: return View(model)
+            -> in the cshtml file the model object can be accessed by @Model and works as an usual C# object
+            -> only one model can be passed from the controller to the view and it will always be accessible as @Model
+            -> you can use c# syntax such as if, for, foreach and while using the @ inside a view
+
+    -> by default, the Razor View Engine doesn't recognize the type of a received parameter but directives can be used
+        -> they start with a lowercase letter, are declared at the top of the file and contains a reference to the expected Class type
+            ex: @model WebTEst.Models.Restaurant
+
+
+-> Services
+    -> services implements methods that act as an intermediar between the controller and the model
+
+    -> is recommended to create an interface for a service and implement it in a concrete class
+        -> this way multiple concrete classes can implement the same interface and create similar services
+        -> when it comes to tests, it's easier to mock and interface than a concrete class
+
+    -> services should be registered inside the ConfigureServices method from the Startup class
+        -> usually, with the structure services.addScoped<Interface,ConcreteClass>();
+
+    -> after registering a Service you can use it as a DI in your controllers or other classes 
+        ex: declare them as a member of the class and simply include them in the Constructor
+
+                //IRestaurant is a registered service
+                public IRestaurant restaurant;
+
+                public ComplexController(IRestaurant restaurant)
+                {
+                    this.restaurant = restaurant;
+                }
+
+
+->  ViewModels
+    -> are also named DTO (Data Transfer Object)
+    -> they are tipically stored in a ViewModels directory
+    -> they combine values from multiple Models so a view can receive a compact information object
+    -> they are used because of the fact that a View can receive only one model as a parameter
+
+
+-> Http Constraints
+    -> if you want to have a route which responds both to GET and POST requests, you should use http Constraints
+        ex: [HttpGet]
+            public IActionResult Create(){
+                return View();
+            }
+
+            [HttpPost]
+            public IActionResult Create(Restaurant restaurant){
+                return ObjectResult(restaurant);
+            }

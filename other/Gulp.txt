@@ -1,0 +1,92 @@
+Gulp.js
+
+- is a JavaScript TaskRunner
+- is a "code before configuration" alternative for Grunt
+
+- important auxiliary modules for gulp
+    - gulp-jscs
+    - gulp-jshint
+    - jshint
+    - jshint-stylish
+    - gulp-util
+    - gulp-print
+    - gulp-if
+    - yargs
+
+- Gulp has 4 APIs
+    - gulp.task 
+        - used to define a task
+    - gulp.src
+        - used to read data from a source
+    - gulp.dest
+        - used to write data on the disk
+    - gulp.watch
+        - used to watch files for modifications
+
+- can be installed using npm
+    - it's a best practice to install it as a dev dependency because it will only be used in development
+    - ex: npm install --save-dex gulp
+
+- test usage
+    - create an empty npm repository
+    - install gulp 
+    - create a "gulpfile.js" file
+    - create a gulp task   
+        - ex: gulp.task('hello', function() {
+                console.log('hello world from gulp');
+            })
+    - run "gulp hello" inside the terminal
+
+- automating tools using Gulp
+    - two useful tools for JavaScript code analysis are: 
+        - jscs - codestyle checking
+        - jshint - detecting errors 
+
+    - installing jshint and jscs for gulp
+        - ex: npm install --save-dev jshint gulp-jshint gulp-jscs jshint-stylish
+        - import them in the gulfile.js file
+        - in the root directory create .jscsrc and .jshintrc files
+        - populate them with default templates
+
+    - create gulp tasks that use jshint and jscsrc
+        -ex: gulp.task('vet', function() {
+	            return gulp
+                    .src('./js/*.js')
+                    .pipe(jscs())
+                    .pipe(jshint())
+                    .pipe(jshint.reporter('jshint-stylish', {verbose: true}));
+            });
+
+- plain JavaScript functions can be written in the gulpfile.js and used inside the tasks
+
+- if you want to output if a script has failed you can use the jshint.reporter('fail) command inside of a pipe
+
+- if you want to display all the files a task will use, you can call the gulp-print module inside a pipe after the .src
+    ex: var gulpprint = require('gulp-print').default;
+        .pipe(gulpprint())
+
+- if you want to implement conditioning in a gulp task you can use gulp-if module
+    ex: .pipe(gulpif(true/false,action))
+
+- if you want to have access to the command-line params you can use yargs module
+    ex: var args = require('yargs').argv
+        - to access a variable use args.<<variable_name>>
+
+- if you want to load plugins lazy and load all the modules using a single parameter you can use gulp-load-plugins
+    ex: var $ = require('gulp-load-plugins)({lazy: true})
+        - when you want to use a module, use $.<<name_of_the_module_without_gulp->>
+            ex: $.if, $.jscs, $.jshint
+
+- Gulp config file
+    - create a config file for Gulp to define your constants
+    - create "gulp.config.js" in the root directory
+    - create a function that defines your constants
+        - ex: module.exports = function(){
+                var config = {
+                    alljs: './js/*.js'
+                }
+
+                return config;
+            };
+    - import it inside your gulpfile.js 
+        - ex: var config = require('gulp.config')
