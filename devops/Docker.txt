@@ -1,0 +1,23 @@
+Docker
+    - Docker is a tool used to pack an environment inside a container
+    - it's more lightweight than a VM because it will run as a process on the host OS
+    - it uses yaml for images configuration
+    - images are the template on which the containers are instantiated
+    - docker images are stored in the cloud, in the Docker Hub
+    
+    - Commands
+        - docker version - displays the version of the installed docker program
+        - docker info - displays info about containers and images from the current machine
+
+        - docker container run -it -p port:port <<image_name>> - run a container
+                                                               - the -it flag runs the container interactively, in the foreground
+                                                               - the -p flag is the short version of --publish
+                                                               - local_machine_port:container_port
+
+        - docker pull <<image_name>> - used to download an image from the docker Hub
+                                     - images are automatically downloaded when a container is instantiated
+        
+        - docker container ls - displays the running containers
+        - docker container ls -a - displays all the containers
+
+        - 
