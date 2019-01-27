@@ -1,5 +1,40 @@
 To Learn
 
+     - Radio Buttons
+        - are organized using a RadioGroup 
+        
+        - to get the checked id and value from a RadioGroup
+                - RadioGroup rg = findViewById(R.id.radioGroupId);
+
+                - Integer radioButtonId = rg.getCheckedRadioButtonId();
+
+                - RadioButton rb = findViewById(radioButtonId);
+
+        - to check a RadioButton programatically you need to have the radioButtonId
+                - rg.check(radioButtonId);
+
+
+    - Shared preferences
+         - are anonymous files stored inside the phone that can be used to save data
+         
+         - to access the sharedPreferences file use
+                - SharedPreferences sharedPreferences = getSharedPreferences("APP_TOKEN", MODE_PRIVATE);
+
+        - to read from sharedPreferences use sharedPreferences.get() methods
+                - sharedPreferences.getString("STRING_IDENTIFIER");
+
+        - to write to the sharedPreferences file
+                - create and Editor
+                        SharedPreferences.Editor = sharedPreferences.edit();
+
+                - put data using the editor.put methods
+                        editor.putString("STRING_IDENTIFIER", string_parameter);
+
+                - to save the data use the commit function
+                - the method returns a boolean which says if the operation was succesful or not
+                        boolean result = editor.commit();
+
+
     - Saving activity state
         - to preserve the state of an activity you have to override the "OnSaveInstanceState" method
         - the data is saved inside the outState bundle
@@ -160,7 +195,7 @@ To Learn
                                 e.printStackTrace();
                         }
                 }
-    
+
 
     - Parse JSON
         - fortunately, a helper class for parsing JSON is implemented by default in Java
@@ -175,12 +210,145 @@ To Learn
 
     - Databases
         - for local databases, Android uses SQLite
-        - the easiest way to interact with a database is through the 
-        - 
+        - the easiest way to interact with a database is through the SQLiteOpenHelper class
+
+        - 3 files are needed
+                - DatabaseConstants
+                        - interface that will hold the SQL strings and other configuration strings
+
+                - DatabaseController
+                        - class that will extend the SQLiteOpenHelper and will interact with the DB
+                        - used for low-level SQL operations (db connection, tables creation)
+                        - implemented as a singleton 
+
+                - Repository
+                        - will hold references to DatabaseConstants and DatabaseController
+                        - will be used for DML operations (insert, update, delete)
+                                - ContentValues class is map-like class used to format the data before insertion
+                                        - contentValues.put - used to append data to the future insertion
+
+                                - Cursor class is used to parse the results returned from a db query
+                                        - cursor.moveToNext() - go to the next returned row
+                                        - cursor.get - gets data from the current returned row
+
+        - DatabaseController
+                - attributes 
+                        - private static DatabaseController controller;
+
+                - methods
+                        - private constructor that can be accessed only from class
+                                private DatabaseController(@Nullable Context context) {
+                                        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+                                }
+
+                        - public static getInstance to substitute the constructor
+                        - is synchronized so it can be used on multiple threads (when AsyncTask is running, for example)
+                                public static DatabaseController getInstance(Context context){
+                                        if(controller == null){
+                                                synchronized(DatabaseController.class){
+                                                        if(controller == null){
+                                                                controller = new DatabaseController(context);
+                                                        }
+                                                }
+                                        }
+                                        return controller;
+                                }
+                        
+                        - override the "onCreate" method
+                                - call sqLiteDatabase.execSQL("Create tables string");
+                        
+                        - override the "onUpgrade" method
+                                - call the sqLiteDatabase.execSQL("Drop tables string");
+                                - call the onCreate(sqLiteDatabase);
+
+
+        - Repository
+                - attributes
+                        - private DatabaseController controller;
+                        - private SQLiteDatabase database;
+
+                - methods
+                        - public constructor
+                                - public Repository(Context context) {
+                                        controller = DatabaseController.getInstance(context);
+                                }
+
+                        - public void open() {
+                                database = controller.getWritableStream();
+                        }
+
+                        - public void close() {
+                                database.close();
+                        }
+
+                        - methods for DML operations
+                                - will have to use
+                                        - database.insert("TABLE_NAME", null, contentValues);
+                                        - database.query("TABLE_NAME", null, ...) - null for everything else
+                                        - contentValues
+                                        - cursor
+
+                                - Insert example
+                                        public long insertExpense(Expense expense){
+
+                                                if(expense == null){
+                                                return -1;
+                                                }
+
+                                                //its structure resembles a map with a key and a value
+                                                ContentValues contentValues = new ContentValues();
+                                                contentValues.put(EXPENSE_COLUMN_DATE, expense.getData() != null ? Constant.simpleDateFormat.format(expense.getData()) : null);
+                                                contentValues.put(EXPENSE_COLUMN_AMOUNT, expense.getAmount());
+                                                contentValues.put(EXPENSE_COLUMN_CATEGORY, expense.getCategory());
+                                                contentValues.put(EXPENSE_COLUMN_DESCRIPTION, expense.getDescription());
+
+                                                return database.insert(EXPENSE_TABLE_NAME,null, contentValues);
+                                        }
+
+                                - Select * example
+                                        public List<Expense> findAllExpense(){
+                                                List<Expense> results = new ArrayList<>();
+
+                                                Cursor cursor = database.query(EXPENSE_TABLE_NAME, null, null,
+                                                        null, null, null, null, null);
+
+                                                while(cursor.moveToNext()){
+                                                        Long id = cursor.getLong(cursor.getColumnIndex(EXPENSE_COLUMN_ID));
+                                                        Date date = null;
+                                                        try{
+                                                        date = Constant.simpleDateFormat.parse(cursor.getString(cursor.getColumnIndex(EXPENSE_COLUMN_DATE)));
+                                                        } catch(ParseException ex){
+                                                        ex.printStackTrace();
+                                                        }
+
+                                                        String category = cursor.getString(cursor.getColumnIndex(EXPENSE_COLUMN_CATEGORY));
+                                                        String description = cursor.getString(cursor.getColumnIndex(EXPENSE_COLUMN_DESCRIPTION));
+                                                        Double amount = cursor.getDouble(cursor.getColumnIndex(EXPENSE_COLUMN_AMOUNT));
+
+                                                        results.add(new Expense(id, date, category, amount, description));
+                                                }
+
+                                                cursor.close();
+                                                return results;
+                                        }
+
+
+    - Requestion permissions
+        - for internet
+                - <uses-permission android:name="android.permission.INTERNET" /> 
+
+        - for wi-fi only
+                - <uses-feature android:name="android.hardware.wifi" />
+
+        - write to storage
+                - <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        
+        - read from storage
+                - <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+
+    - AlertDialogs
 
     - Graphics
 
-    - Requestion permissions
-
-    - Shared preferences
-
+    - Screen Rotation
