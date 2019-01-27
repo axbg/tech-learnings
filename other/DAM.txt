@@ -1,0 +1,61 @@
+To Learn
+
+
+    - Working with dates
+        - in the Constants interface create two resources
+                String DateFormat = "dd-mm-yyyy";
+                SimpleDateFormat dateFormatter = new SimpleDateFormat(DateFormat);
+        
+        - When you receive a date from a layout input, convert it to date
+                Date date = dateFormatter(input);
+        - If the value is invalid, an error will be thrown
+        
+        - if you want to convert a Date back to String, use the same method
+                String date = dateFormatter(date);
+
+
+    - Menu
+        - create a new directory in the res directory and name it "menu"
+        - create a new "Menu Resource File" using the interface
+        - create as many MenuItems as you need
+
+        - back in the Activity where you want to implement the menu
+        - override the "OnCreateOptionsMenu" method and inflate the menu
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.your_menu_layout);
+
+        - if you want to hide an element use 
+                menu.findItem(R.id.your_menu_item).setVisible(false);
+
+        - to set specific behaviour for clicking on a menu item override the "onOptionsItemsSelected"
+        - use a switch to treat all the cases
+                switch(item.getItemId()){
+                    case R.id.your_item_id:
+                        doSomething();
+                        return 1;
+                }        
+
+
+    - Array Adapters
+        - it can be used with a Spinner(R.layout.) or a ListView(R.layout.)
+        - you have to override the toString method in the target class
+                ArrayAdapter adapter = new ArrayAdapter(getApplicationContext, R.layout.resource, yourCollectionWithObjects);
+                spinner.setAdapter(adapter);
+        
+        - to update the adapters data source use
+                adapter.notifyDataSetChange(); 
+
+
+    - Custom Adapters
+        - particular type of adapters which supports complex behaviour
+        - they should be implemented starting from a base class
+        - example of base classes: SpinnerAdapter, ListAdapter, ArrayAdapter
+
+    - Databases
+
+    - AsyncTask + HTTP Requests
+    
+    - Parse JSON
+
+    - Canvas
+    
