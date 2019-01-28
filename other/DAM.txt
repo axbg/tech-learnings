@@ -237,6 +237,7 @@ To Learn
                                 e.printStackTrace();
                         }
                 }
+                return builder.getString();
 
 
     - Parse JSON
@@ -264,7 +265,8 @@ To Learn
                         - implemented as a singleton 
 
                 - Repository
-                        - will hold references to DatabaseConstants and DatabaseController
+                        - will hold references to SQLiteDatabase and DatabaseController
+                        - implements open() and close() methods
                         - will be used for DML operations (insert, update, delete)
                                 - ContentValues class is map-like class used to format the data before insertion
                                         - contentValues.put - used to append data to the future insertion
@@ -279,6 +281,7 @@ To Learn
 
                 - methods
                         - private constructor that can be accessed only from class
+                        
                                 private DatabaseController(@Nullable Context context) {
                                         super(context, DATABASE_NAME, null, DATABASE_VERSION);
                                 }
