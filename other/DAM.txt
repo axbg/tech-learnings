@@ -61,6 +61,10 @@ To Learn
         - if you want to convert a Date back to String, use the same method
                 String date = dateFormatter(date);
 
+        - to get the current date 
+                Date date = new Date()
+        - then format it
+
 
     - Menu
         - create a new directory in the res directory and name it "menu"
@@ -127,6 +131,44 @@ To Learn
 
                 - inside this method populate all the textViews present in the linear layout structure
                 - return the row
+
+                public class ExpenseAdapter extends ArrayAdapter<Expense> {
+
+                                private Context context;
+                                private int resource;
+                                private List<Expense> expenses;
+                                private LayoutInflater inflater;
+
+                                public ExpenseAdapter(@NonNull Context context, int resource, @NonNull List<Expense> objects, LayoutInflater inflater){
+
+                                        super(context, resource, objects);
+                                        this.context = context;
+                                        this.resource = resource;
+                                        this.expenses = objects;
+                                        this.inflater = inflater;
+
+                                }
+
+                                @NonNull
+                                @Override
+                                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+                                        View row = inflater.inflate(resource, parent, false);
+
+                                        TextView tvDate = row.findViewById(R.id.tv_date_expense_display);
+                                        TextView tvAmount = row.findViewById(R.id.tv_amount_expense_display);
+                                        TextView tvDescription = row.findViewById(R.id.tv_description_expense_display);
+                                        TextView tvCategory = row.findViewById(R.id.tv_category_expense_display);
+
+                                        Expense expense = expenses.get(position);
+
+                                        tvDate.setText(expense.getData()!=null ? Constant.simpleDateFormat.format(expense.getData()):null);
+                                        tvDescription.setText(expense.getDescription());
+                                        tvAmount.setText(expense.getAmount() != null ? expense.getAmount().toString():null);
+                                        tvCategory.setText(expense.getCategory());
+
+                                        return row;
+                                }
 
                 - use it in the targeted activity as follows
                         CustomAdapter adapter = new CustomAdapter(getApplicationContext(), R.layout.your_linear_layout_template, objects, getLayoutInflater());
@@ -292,7 +334,7 @@ To Learn
                                         public long insertExpense(Expense expense){
 
                                                 if(expense == null){
-                                                return -1;
+                                                        return -1;
                                                 }
 
                                                 //its structure resembles a map with a key and a value
@@ -305,7 +347,7 @@ To Learn
                                                 return database.insert(EXPENSE_TABLE_NAME,null, contentValues);
                                         }
 
-                                - Select * example
+                                - Select * from table example
                                         public List<Expense> findAllExpense(){
                                                 List<Expense> results = new ArrayList<>();
 
@@ -349,6 +391,7 @@ To Learn
 
     - AlertDialogs
 
-    - Graphics
 
     - Screen Rotation
+        - you have to override the "onSaveInstanceState" and "onRestoreInstanceState" methods
+        - when the screen is rotated, the activity is basically destroyed so you have to repopulate all the inputs
