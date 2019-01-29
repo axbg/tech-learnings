@@ -74,7 +74,7 @@ To Learn
         - back in the Activity where you want to implement the menu
         - override the "OnCreateOptionsMenu" method and inflate the menu
                 MenuInflater inflater = getMenuInflater();
-                inflater.inflate(R.menu.your_menu_layout);
+                inflater.inflate(R.menu.your_menu_layout, menu);
 
         - if you want to hide an element use 
                 menu.findItem(R.id.your_menu_item).setVisible(false);
@@ -392,9 +392,22 @@ To Learn
                 - <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 
-    - AlertDialogs
+    - AlertDialog Example
+                new AlertDialog.Builder(this)
+                        .setTitle("Title")
+                        .setMessage("Do you really want to do smth?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                Toast.makeText(MainActivity.this, "Yaay", Toast.LENGTH_SHORT).show();
+                                }})
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                Toast.makeText(MainActivity.this, "Ok then", Toast.LENGTH_SHORT).show();
+                                }})
+                        .show();
 
 
     - Screen Rotation
         - you have to override the "onSaveInstanceState" and "onRestoreInstanceState" methods
         - when the screen is rotated, the activity is basically destroyed so you have to repopulate all the inputs
+        - you have to keep references to the adapter and to the display control (the listview, for example)
