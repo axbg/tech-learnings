@@ -1,0 +1,19 @@
+WSDL (Web Service Description Language)
+    - is a document used in SOAP based services to describe the functionalities of a service
+    - they can be saved in a global repo called UDDI to be easier for a web service to be discovered by potential consummers
+    - it can be generated from using Altova, but you have to customize it
+    
+    - it has 5 major elements
+        1. WSDL types
+            - describe the types used inside the WSDL
+        2. Port Type I/O Messages
+            - describes the supported operations, their name and their type
+            - it will be reused inside the Port definition
+        3. Port type
+            - describes the names of the supported operations for input and output
+        4. Binding 
+            - describes the SOAP implementation details
+            - describes in detail the implementation of the operations mentioned in Port Type
+        5. Service with Port
+            - describes the addresses where the service can be accessed
+ 

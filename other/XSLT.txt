@@ -1,0 +1,31 @@
+XSLT Syntax
+
+    XSLT declaration
+        - XSLT elements can be accessed inside an XML if the following tag is present
+        - tag: <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    Templates
+        - XSLT uses templates to define how an XML element should be rendered
+        - tag: <xsl:template match=""></xsl:template>
+        - any XSLT must have a template that matches the / element
+
+        - <xsl:apply-templates select="template_name"/> - applies the defined template for the children of a node
+
+        - <xsl:value-of select="parent/children"/> - extract data from a node 
+
+        - <xsl:for-each select="parent/children"></xsl:for-each> - iterates over a collection of nodes
+
+        [] - specify a condition on a node
+            - ex: <xsl:for-each select="parent/children[title="Welcome"]
+
+        - <xsl:sort/> - sorts a list of nodes
+                     - should be used inside a <xsl:for-each> loop
+
+        - <xsl:if test="expression"> output </xsl:if> - displays an output if the expression is true
+                                              - cannot be used as if/else - for that you should use choose
+s
+        - <xsl:choose> <xsl:when test="expression> content </xsl:when> <xsl:otherwise> content </xsl:otherwise> </xsl:choose>
+                                            - works as a common switch
+                                            - can be used for if/else expressions
+                                            - multiple when expressions could be used
+

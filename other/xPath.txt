@@ -1,0 +1,32 @@
+xPath syntax
+
+    Selectors
+        node - selects all the "node" nodes
+
+        /node - selects all the specified nodes, starting from the virtual root node
+
+        //node - selects all the specified nodes, starting from the current node, no matter where the searched node is place inside the document
+
+        . - selects the current node
+
+        .. - selects the parrent of the current node
+
+        @attr - select all the specified attributes
+
+        //node[index] - selects the node from the index position
+                    - unlike a traditional programming language, the index of an array starts from 1
+
+        * - matches any node
+
+        @* - matches any attribute
+
+        node1::node2 - selects all the specified node2 nodes that are children of node1
+
+        [] - specifies a condition
+
+
+
+     Functions
+        text() - selects all the text children of a node
+
+        node() - select all the children of a node
