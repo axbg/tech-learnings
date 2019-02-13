@@ -1,0 +1,182 @@
+Python Basic Instructions and Concepts
+
+	Operators
+		- # - one line comment operator
+
+		- """ text """ - block of lines comment operator
+
+		- 2**2 - mathematical power operator
+
+		- %s - operator for string interpolation
+			ex: print("hello %s" % "you there")
+
+		- %d - operator for integer interpolation
+
+		- operators binding order: not > and > or
+			ex: 1 or 0 and 0 results 1
+
+		\ - user to break the current line of code
+			ex: if i > 1 and \
+					i < 5: 
+
+
+
+	Basic Methods
+		- print("something") - prints a line to the console
+
+		- len(string) - returns the length of a string
+
+		- str(string) - used to convert a variable to the String type
+
+		- string.lower() - converts a string into lowercase
+
+		- string.upper() - converts a string into uppercase
+
+		- string.isalpha() - checks if a string contains only letters
+
+		- string1 = string1 + string2  - concatenation of two strings
+
+		- variable = input("text") - prints the given text and reads a keyboard input which will be stored inside the variable
+				- supports typecasting: variable = int(raw_input("insert a number"))
+
+
+
+	Date & Time
+		- from datetime import datetime  - importing datetime library 
+		
+		- datetime.now()  - retrieving the current datetime
+
+		- elements composing the datetime can be accessed separately
+			ex: simple_date.year, simple_date.month, simple_date.hour, simple_date.second, etc
+
+	
+
+	Keywords 
+		elif - equivalent for "else if" in other languages
+
+		def function_name(parameters): - function declarations
+
+		import library - imports a whole library
+					   - to use a method from the imported library, the method name has to be prefixed: library.method
+
+		from library import functie - imports a method that doesn't need to be prefixed
+
+		from library import * - imports a whole library and the methods doesn't need to be prefixed
+
+
+
+	Lists
+		- similar to an array
+
+		- lst = ["tralala", 2, "tralala2"] - creating a list
+
+		- lst.append(3)   - adds a new value to a list
+
+		- Slicing
+			- used to substract elements from a list
+
+				- lst[0:n] - returns the first n-1 elements
+
+				- lst[:3]  - returns the first 3 elements
+
+				- lst[1:]  - returns all the elements starting from the second one
+
+				- lst[start:stop:step]  - returns the elements from the start position to the stop, using a step
+					- if the step is negative the list is parsed in reverse
+
+		- lst.index(element) - returns the index of the given element or an error if it's not found
+
+		- lst.insert(index,element) - inserts an element on the given index
+		
+		- lista.sort() - sorts the list
+		
+		- numelista.pop(index) - removes from the list the element placed on the given index position
+
+		- lista.remove(element) - deletes the given element from the list
+
+		- for element in lst:  - alternative syntax to parse a list
+
+
+
+	Dictionnaries
+		- similar to map, has a key associated to every value
+
+		- example: 
+			lloyd = {
+				"name": "Lloyd",
+				"homework": [90.0, 97.0, 75.0, 92.0],
+				"quizzes": [88.0, 40.0, 94.0],
+				"tests": [75.0, 90.0]
+			}
+
+		- lloyd.items() - get all key:value tuples as an array of lists
+
+		- lloyd.keys() - get all keys
+
+		- lloyd.values() - get all values
+
+		- dct = {"key": value, "key2": value2} - creating a new dictionnary
+
+		- dct[new_key] = new_value  - adding a new value to a dictionnary
+		
+		- del dct[key] - deleting an element from a dictionnary
+
+
+
+	List Methods
+	- enumerate(our_list) - extract both the index and the value from a list
+						  	- example: for index, element in enumerate(our_list):
+
+	- zip(lista1, lista2) - usually used to parse two lists at once
+					  	  	- example: for elem_lista1, elem_lista2 in zip(lista1, lista2):
+						  - can be used to transform two lists into a zip object that can be transformed into an array of lists
+						  	- example: our_zip = zip((1,2,3),(4, 5, 6))
+							  		   our_list = list(our_zip)
+										 	- our_list will contain [(1,4), (2,5), (3,6)]
+
+
+
+	Lists Comprehension 
+		- generates a list based on a specific condition
+			example:
+				our_list = [x**2 for x in range(12) if x % 3 == 0]
+					- returns a list of squares of all the numbers lower than 12 which are divisible with 3
+
+
+
+	Lambda Functions
+		- are annonymous functions declared locally
+			example:
+				fc = lambda x : print(x+2)
+				print((fc(3))) will print 5
+
+		- lambda functions can be sent as a parameter to other functions
+			example: print(filter(lambda x : x == "Python", languages))
+
+
+
+	Object Oriented Programming Concepts
+
+		- class class_name(parent_class):
+
+		- the first parameter of a class function is always self
+
+		- constructor: __init__(self, atr1, atr2):
+
+		- destructor: __del__(self):
+
+		- toString method: __str__(self):
+
+		- a basic class inheritance example 
+
+			class Animal:                                
+				def __init__(self, name, weight):
+					self.name = nume
+					self.weight = weight
+				
+				def makeSound(self):
+					return self.name + ": Arghh!"
+
+			class Caine(Animal):                      
+				def makeSound(self):
+					return self.name + ": Woof!"	 
