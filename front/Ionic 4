@@ -1,0 +1,33 @@
+Ionic
+    - a framework built on top of Apache Cordova that creates hybrid apps that run, mostly as a webview, on both Android and iOS
+    - uses Angular by default, but can be used with both React & Vue 
+    - comes with the powerfull Ionic CLI
+    - comes with an on-device testing tool called Ionic DevApp (ionic serve -devapp)
+    - project structure is very similar to Angular's
+    - has an official UI library
+    - has a preconfigured theme file in which colors & shades are declared
+        - they can be applied using specific Ionic attributes (ex: color="dark" will reference "--ion-color-dark: #000000" from theme)
+    - the metadata configuration file is "config.xml" and it's similar to Android's AndroidManifest.xml
+
+    Ionic UI Components
+        - <ion-header></ion-header>
+        - <ion-toolbar></ion-toolbar>
+        - <ion-title></ion-title>
+        - <ion-content></ion-content>
+
+    Basic Commands
+        - install via npm: npm install -g Ionic
+
+        - Ionic CLI
+            - ionic start <<project_name>> - creates a new ionic project
+                - can generate standard UI components such as tabs or sidemenu
+                    - ex: ionic start <<project_name>> tabs
+            
+            - ionic generate page/component/directive/service <<name>> - creates a new component
+                - uses Angular CLI underneath
+            
+            - ionic serve - starts a development server
+
+            - ionic cordova run android - runs the app on a connected Android device
+
+            - ionic cordova build --release <<os>> - produces a release build
