@@ -51,12 +51,13 @@ Java 8 Concepts
             - is an object that can define operations, doesn't hold any data and doesn't modify the initial object
             - are efficient for data processing, because it uses multithreading under the hood
             - built by the .stream() method implemented by the Collection interface
+            - a stream cannot be reused after a final operation was applied to it
             - uses the Builder pattern, returning a stream everytime, so it allows chaining
 
             - can implement specific intermediary and terminal operations
             - to trigger the chain of methods invoked by a stream, at least one final operation should be present!
 
-                - intermediary operations:
+                - intermediary (or lazy) operations:
                     - map(Function T)
                         - returns a list that contains of objects of a different type
                         - used to apply transformation from a type to another
