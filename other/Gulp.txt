@@ -25,7 +25,7 @@ Gulp.js
 
 - can be installed using npm
     - it's a best practice to install it as a dev dependency because it will only be used in development
-    - ex: npm install --save-dex gulp
+    - ex: npm install --save-dev gulp
 
 - test usage
     - create an empty npm repository
@@ -90,3 +90,15 @@ Gulp.js
             };
     - import it inside your gulpfile.js 
         - ex: var config = require('gulp.config')
+	
+- Simple browser reload example
+
+	gulp.task('sync', function() {
+	    browserSync.init({
+		server: "../"
+	    });
+
+	    gulp.watch("../*.html").on('change', browserSync.reload);
+	    gulp.watch("../*.css").on('change', browserSync.reload);
+	    gulp.watch("../*.js").on('change', browserSync.reload);
+	});
