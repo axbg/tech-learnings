@@ -1,0 +1,145 @@
+Kotlin
+
+- statically-typed language, developed by JetBrains
+- it's a language that it's compiled to bytecode using JVM
+- conventionally, semicolons are not needed, but they can be used at the end of a statement
+
+
+- Code snippet
+
+	val top_level_name = "Global_Example"
+
+	fun getSomething(something: String): String = println("getting $something")
+	
+	fun main() {
+		var mutable_name: String? = "Example"
+		val immutable_name: String = Example2"
+
+		println("Hello Kotlin" + immutable_name)
+
+		if(mutable_name != null) {
+			println(mutable_name);
+		}
+
+		when(argument) {
+			first_equals_condition -> println("hi when first condition")
+			second_equals_condition -> println("hi when second condition")
+			else -> { 
+				println("hi when null")
+			}
+		}
+
+		getSomething("sweet")
+
+	}
+
+
+
+- Variables & types
+	- they can be mutable or immutable
+		- var - a mutable variable
+
+		- val - local, immutable variables
+		      - produces an error when updated
+
+	- they can be declared outside functions and classes
+		- they are called "Top Level Variables"
+
+
+	- by default, variables are non-nullable, and will throw an error when a null is assigned
+		- to be nullable, the definition types should have a ? after it (ex: var t: String? = null)
+
+	
+	- an easier way to declare variables is to let Kotlin detect variable type
+		- the variables declared this way are always non-nullable (standard syntax should be used for nullable)
+		-	 ex: 
+			- val immutable_name = "Example"
+
+	- special types
+		- Any - represents the root of every non-nullable class hierarchy (similar to Object in Java)
+		      - nulls can be stored using the general notation Any?	
+		- Unit - represents the void notation and it's optional when declaring functions
+		- Nothing - it's used for the functions that will never return a normal value (eg: throwing an exception without being caught)
+
+
+
+- Control instructions
+
+	- if 
+		if(condition) {
+        println("write something")
+      } else if(condition2) {
+        println("write something else")
+      } else {
+        println("last time to write something")
+      }
+
+	- one-liner if
+		  val result = if(condition) true else false
+	
+	- when
+      when(argument) {
+        first_equals_condition -> println("hi when first condition")
+        second_equals_condition -> println("hi when second condition")
+        else -> { 
+          println("hi when null")
+        }
+      }
+
+
+	- for
+      for (item in items) {
+        println(item)
+      }
+
+	- foreach
+		- it is the default name for looped elements iterator
+
+      someArray.forEach {
+        println(it)
+      }
+
+      someArray.forEach { element ->
+        println(element)
+      }
+
+	- foreach with index
+      someArray.forEachIndexed{ index, element -> 
+        println("$element on $index")
+      }
+
+
+
+- Functions
+	- functions can be defined outside classes and are called "top level functions"
+
+	- basic function example:
+      fun getSomething(something: String): String {
+        return "getting $something"
+      }
+
+      println(getSomething())
+
+	- lambda example:
+      val funct: () -> Unit = { println("Hello world") }
+      funct()
+
+      val funct = () -> println("Hello world")
+      funct()
+
+	- single expression function 
+      fun getSomething(): String = "getting something'"
+
+
+
+- Collections
+
+	- Array
+		- example: 
+			val arr = arrayOf("Kotlin", "World")
+
+	- List
+		- example:
+			val ls = listOf("something", "else")
+	
+	
