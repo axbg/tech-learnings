@@ -31,6 +31,14 @@ Kotlin
 
 		getSomething("sweet")
 
+		val arr = arrayOf("Kotlin", "World")
+		val ls = listOf("something", "else")
+		val mp = mapOf(1 to "a", 2 to "b")
+
+	}
+
+	class Animal {
+
 	}
 
 
@@ -67,79 +75,162 @@ Kotlin
 
 	- if 
 		if(condition) {
-        println("write something")
-      } else if(condition2) {
-        println("write something else")
-      } else {
-        println("last time to write something")
-      }
+			println("write something")
+		} else if(condition2) {
+			println("write something else")
+	      	} else {
+			println("last time to write something")
+	      	}
 
 	- one-liner if
 		  val result = if(condition) true else false
 	
 	- when
-      when(argument) {
-        first_equals_condition -> println("hi when first condition")
-        second_equals_condition -> println("hi when second condition")
-        else -> { 
-          println("hi when null")
-        }
-      }
+      		when(argument) {
+        		first_equals_condition -> println("hi when first condition")
+        		second_equals_condition -> println("hi when second condition")
+        		else -> { 
+          		println("hi when null")
+        		}
+      		}
 
 
 	- for
-      for (item in items) {
-        println(item)
-      }
+      		for (item in items) {
+        		println(item)
+      		}
 
 	- foreach
 		- it is the default name for looped elements iterator
 
-      someArray.forEach {
-        println(it)
-      }
+      		someArray.forEach {
+        		println(it)
+      		}
 
-      someArray.forEach { element ->
-        println(element)
-      }
+      		someArray.forEach { element ->
+        		println(element)
+      		}
 
 	- foreach with index
-      someArray.forEachIndexed{ index, element -> 
-        println("$element on $index")
-      }
+      		someArray.forEachIndexed{ index, element -> 
+        		println("$element on $index")
+      		}
 
 
 
 - Functions
 	- functions can be defined outside classes and are called "top level functions"
+	- functions can accept both positional arguments and named arguments that can have different positions (but they cannot be mixed)
+		- example:
+			fun getSomething(name: String, age: Integer) = print("$name: $age")
+			
+			getSomething("Alex", 22)
+			getSomething(age=22, name="Alex")
+
+	- functions accepts a default parameter value
+		- example:
+			fun getSomething(name: String = "Alex") = print("$name")
+			getSomething()
 
 	- basic function example:
-      fun getSomething(something: String): String {
-        return "getting $something"
-      }
-
-      println(getSomething())
+		fun getSomething(something: String): String {
+        		return "getting $something"
+      		}
+      		println(getSomething())
 
 	- lambda example:
-      val funct: () -> Unit = { println("Hello world") }
-      funct()
+		val funct: () -> Unit = { println("Hello world") }
+		funct()
 
-      val funct = () -> println("Hello world")
-      funct()
+		val funct = () -> println("Hello world")
+		funct()
 
 	- single expression function 
-      fun getSomething(): String = "getting something'"
+		fun getSomething(): String = "getting something'"
 
 
 
 - Collections
+	- are immutable by default
+		- Immutable Collections
+			- Array
+				- example: 
+					val arr = arrayOf("Kotlin", "World")
 
-	- Array
-		- example: 
-			val arr = arrayOf("Kotlin", "World")
+			- List
+				- example:
+					val ls = listOf("something", "else")
+	
+			- Map
+				- example:
+					val mp = mapOf(1 to "a", 2 to "b")
 
-	- List
+		- Mutable Collections
+			- the declarations are the same as for immuttable collections, but they contains the "mutable" word in the beginning
+			- example:
+				- mutableArrayOf(), mutableListOf(), mutableMapOf()
+
+
+
+- Keywords
+	- vararg
+		- similar to Java's ... notation
+		- allows a function to take a variable number of parameters as input
 		- example:
-			val ls = listOf("something", "else")
-	
-	
+			function getSomething(vararg items: String) = println(items.size)
+
+	-  *arrayVariable
+		- the spread variable, similar to JavaScripts' ... notation
+
+
+
+- Classes
+	- the "new" keyword is optional when instantiating a class
+	- the default constructor can be defined right after the class definition
+		- example: class Person(firstName: String, lastName: String)
+	- like functions, the default constructor can accept default parameter values
+	- the values can be defined either inside an init block or directly when defined
+		- init block
+			class Person(_firstName: String, _lastName: String) {
+				val firstName: String
+				val lastName: String
+
+				init {
+					firstName = _firstName
+					lastName = _lastNAme
+				}
+			}
+
+		- at definition
+			class Person(_firstName: String, _lastName: String) {
+				val firstName: String = _firstName
+				val lastName: String = _lastName
+			}
+
+	- the properties can be defined and map directly in the default constructor
+		- example
+			class Person(val firstName: String, val lastName: String) {}
+
+	- classes can define secondary constructors using the "constructor" keyword
+		- example
+			class Person(val firstName: String, val lastName: String) {
+				constructor(): this("Peter", "Parker") {
+					println("Secondary constructor")
+				}
+			}
+
+	- Getters  & Setters
+		- are accessed directly using the property name
+		- example
+			class Person(val firstName: String, val lastName: String) {
+				var nickName: String? = null
+					set(value) {
+						field = value
+					}
+					get() {
+						println("the value of nickName is $field")
+					}
+			}
+			p1 = Person("Peter", "Parker")
+			p1.nickName = "Spider-Man"
+			println(p1.nickName)
