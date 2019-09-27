@@ -38,7 +38,7 @@ Kotlin
 	}
 
 	class Animal {
-
+		override fun toString(): String = println("to string implementation")
 	}
 
 
@@ -78,9 +78,9 @@ Kotlin
 			println("write something")
 		} else if(condition2) {
 			println("write something else")
-	      	} else {
+	    } else {
 			println("last time to write something")
-	      	}
+	  	}
 
 	- one-liner if
 		  val result = if(condition) true else false
@@ -116,13 +116,17 @@ Kotlin
         		println("$element on $index")
       		}
 
+	- == 
+		- checks if two instances have equal attributes values
 
+	- ===
+		- checks if two instances are, actually, the same instance
 
 - Functions
 	- functions can be defined outside classes and are called "top level functions"
 	- functions can accept both positional arguments and named arguments that can have different positions (but they cannot be mixed)
 		- example:
-			fun getSomething(name: String, age: Integer) = print("$name: $age")
+			fun getSomething(name: String, age: Int) = print("$name: $age")
 			
 			getSomething("Alex", 22)
 			getSomething(age=22, name="Alex")
@@ -182,9 +186,44 @@ Kotlin
 	-  *arrayVariable
 		- the spread variable, similar to JavaScripts' ... notation
 
+	- super
+		- the same as in Java
+
+	- is
+		- the same as Java's instanceof
+
+	- as
+		- used for explicit casting
+		- example:
+			Parent parent = child as Parent
+
+	- open
+		- allows a class to be inherited
+
+	- sealed
+		- allows defining strict hierarchical structures
+
+	- data class
+		- defines a class that auto-implements
+			- constructor
+			- componentN methods that work like accessors
+			- toString
+			- equals 
+			- hashCode
+			- copy
+		-  methods and attributes of a data class can be defined as an extension, outside class definition
+			- example
+				data class Medium(val id: Int)
+				fun Medium.printInfo(): String = println(id)
+				val Medium.age: Int
+
+	- copy
+		- creates a shallow copy of an instance
 
 
 - Classes
+	- private classes are available only inside the file where they are defined
+	- abstract classes are preceeded by the "abstract" keyword
 	- the "new" keyword is optional when instantiating a class
 	- the default constructor can be defined right after the class definition
 		- example: class Person(firstName: String, lastName: String)
@@ -221,6 +260,7 @@ Kotlin
 
 	- Getters  & Setters
 		- are accessed directly using the property name
+		- are defined directly under field definition
 		- example
 			class Person(val firstName: String, val lastName: String) {
 				var nickName: String? = null
@@ -234,3 +274,110 @@ Kotlin
 			p1 = Person("Peter", "Parker")
 			p1.nickName = "Spider-Man"
 			println(p1.nickName)
+ 
+	- Visibility Modifiers
+		- private - visible for class members only
+		- protected - visible for class members & subclasses
+		- internal - visible for module members
+		- public - default
+
+	- Class Methods
+		- declare a simple method inside the class
+		- the method has access to class members without prior qualifications (eg: no need for this keyword)
+
+
+
+- Interfaces
+	- can define both attributes and methods prototypes, but attributes cannot have a default value
+	- inside the classes, implemented methods and attributes are preceeded by the "override" keyword
+	- interfaces can provide default implementations for its methods without using any Keyword
+	- are implements using the : notation
+		- example: class BasicImplementation : BasicInterface
+
+
+
+- Object Expressions
+	- allows anonymous inheritance of a class
+		- example
+			val provider = object : ParentClass {
+				override val name: String
+
+				fun getUpperName(): String = name.toUpperCase()
+			}
+			println(provider.getUpperName())
+	
+
+
+- Companion Objects
+	- it's an object scoped to an instance of another class that can access its properties
+		- example:
+			class Entity private constructor(val id: String) {
+				companion object {
+					fun create() = Entity("id")
+				}
+			}
+
+			fun main() {
+				val entity = Entity.create()
+			}
+			
+
+
+- Object Declarations
+	- allows anonymous classes instantiation
+	- example:
+		object AnonObject { 
+			name: String
+				get() {
+					return name
+				}
+		}
+
+		AnonObject.name
+
+
+
+- Enums
+	- example:
+		enum class EnumType {
+			EASY, MEDIUM, HARD
+		}
+		EnumType.EASY
+
+
+
+- Sealed classes
+	- they work like an enum, but can accept different parameters for each type
+	- all the classes that will inherit a sealed class must be declared in the same file as the sealed class itself
+	- example:
+		sealed class Entity() {
+			data class Easy(val id: String): Entity()
+			data class Medium(val id: String, val name: String): Entity()
+			data class Hard(val id: String, val name: String, val age: Int): Entity()
+		}
+
+
+
+- Higher Order Functions
+    - based on the passing of functions as parameters (as function parameters)
+        - example:
+            fun higherOrder(name: String, embeddedFunction: (String) -> Boolean): String {
+                return when(embeddedFunction("YES")) {
+                    true -> "yes"
+                    false -> "yes"
+                }
+            }
+            println(higherOrder("test", {false}))
+
+    - if the last parameter of a function is a function parameter, then it could be passed outside function call, inside braces
+        - example
+            println(higherOrder("test"){false})
+
+    - if the function parameter is nullable, the .invoke method should be used to check if the function can be safely called
+        - example
+            fun higherOrder(name: String, embeddedFunction: ((String) -> Boolean)?): String {
+                return when(embeddedFunction?.invoke() == "YES") {
+                    true -> "yes"
+                    false -> "yes"
+                }
+            }
