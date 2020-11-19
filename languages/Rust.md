@@ -1,7 +1,7 @@
 # Rust
-### Based on (Tour of Rust)[https://tourofrust.com]
-
+### Based on [Tour of Rust](https://tourofrust.com)
 * associated with the .rs file extension
+
 * is a system-level language, with multiple tools dedicated to memory management and safety
 
 ## Hello world
