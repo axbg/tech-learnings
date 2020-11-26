@@ -6,33 +6,27 @@ It may seem silly, but it's very helpful when I need to relearn a technology I g
 ### So, here are my notes.
 ### You're welcome to take a look.
 
-- Back-End
-  - ASP .NET Core
 - DevOps
-  - Docker
+  - [Docker](/devops/docker.md)
+
 - Front-End
-  - Angular 6
-  - Ionic 4
-  - Svelte
+  - [Angular](/front/angular.md)
+  - [Ionic](/front/ionic.md)
+  - [Svelte](/front/svelte.md)
+
 - Programming Languages
-  - Go
-  - Java 8 Concepts
-  - Kotlin
-  - Python 3+
+  - [Go](/languages/go.md)
+  - [Java](/languages/java)
+    - [Spring AOP](/languages/java/spring_aop)
+    - [Java 8 Concepts](/languages/java/java_8_concepts.md)
+  - [Kotlin](/languages/kotlin.md)
+  - [Python](/languages/python.md)
+  - [Rust](/languages/rust.md)
+
 - Miscellaneous 
-  - Android Concepts
-  - Git 101
-  - Gulp
-  - Unit Testing Concepts & JUnit
-  - PowerShell basics 
-  - Software Testing Concepts
-  - WDSL basics
-  - XML Technologies (XPath, XSLT, xQuery)
-- Operations
-  - Apache Installation
-  - Apache Logs formatting
-  - CentOS7 config & SSH
-  - IP Configuration & File System 101
-  - LAMP
-  - Bash 101
-  - Wordpress config
+  - [Android Concepts](/misc/android_concepts.md)
+  - [Git Basics](/misc/git.md)
+  - [Gulp](/misc/gulp.md)
+  - [Unit Testing Concepts & JUnit](/misc/junit.md)
+  - [Software Testing Concepts](/misc/software_testing_concepts.md)
+  - [XML Technologies](/misc/xml_technologies.md)
