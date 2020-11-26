@@ -1,4 +1,4 @@
-# Python Basic
+# Python Basics
 
 ## Operators
 - `\#` - one line comment operator
