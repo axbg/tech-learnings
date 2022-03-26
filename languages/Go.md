@@ -24,11 +24,11 @@
         "fmt"
     )
 
-    fnc main() {
+    func main() {
         fmt.Println("Hello world!")
     }
 
-    fnc otherFunction(x int, y int) (int) { }
+    funcc otherFunction(x int, y int) (int) { }
     ```
 
 - to compile a .go file use the "go build"
