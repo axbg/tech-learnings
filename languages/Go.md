@@ -116,33 +116,59 @@ func main() {
 
 - Branching
     - if
-        ```go
-        if x > 6 {
-            //do something
-        } else if {
-            //do something else
-        } else {
-            //last something
-        }
-        ```
+        - syntax
+            ```go
+            if x > 6 {
+                //do something
+            } else if {
+                //do something else
+            } else {
+                //last something
+            }
+            ```
+
+        - the if statement can start with a short assig statement that is executed before the condition is checked
+            ```go
+            if x := 5; x == 5 {
+                fmt.Printf("it's 5: %d\n", x)
+            } else {
+                // the value declared in the if assign statement is also available in the branches
+                fmt.Printf("it's not 5: %d\n", x)
+            }
+            ```
     - switch
-        - unlike other popular languages, the `break` keyword is not used 
+        - unlike other popular languages, the `break` keyword is not used, as the execution targets only the identified case
+            ```go
+            a := 5
 
-        ```go
-        a := 5
+            switch a {
+                case 5:
+                    fmt.Println("it's 5")
+                case 6:
+                    fmt.Println("it's 6")
+                // multi-case condition
+                case 7,8:
+                    fmt.Println("it's 7 or 8")
+                default:
+                    fmt.Println("it's something else :(")
+            }
+            ```
 
-        switch a {
-            case 5:
-                fmt.Println("it's 5")
-            case 6:
-                fmt.Println("it's 6")
-            // multi-case condition
-            case 7,8:
-                fmt.Println("it's 7 or 8")
-            default:
-                fmt.Println("it's something else :(")
-        }
-        ```
+        - switch with no condition is the same as writing `switch true` and it can be useful to write cleaner if/else conditions
+    
+    - Defer
+        - it postpones the execution of a function until the functions surrounding it finish running
+            ```go
+            func main() {
+	            defer fmt.Println("world")
+
+	            fmt.Println("hello")
+            }
+            ```
+        
+        - even though the call itself is delayed, the deferred call arguments are evaluated immediately
+
+        - if multiple deferred calls are present in the same scope, they will be executed in a `last-in first-out` order, as they are organized using a stack
 
 - Arrays
     - declaring an array
