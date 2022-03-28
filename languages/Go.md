@@ -1,11 +1,13 @@
 # Go
-- a relatively new, very fast, compiled language coined by Google
+
+### Introduction
+- a relatively new, fast, compiled language coined by Google
 
 - uses structures instead of classes
 
 - doesn't have exceptions or an exception handling mechanism
 
-- every .go file must start with the package definition, resembling Java
+- every *.go* file must start with the package definition, resembling Java
 
 - every project must have a main package
 
@@ -16,70 +18,193 @@
     - error - used for error generation
     - math - mathematical functions
 
-- "Hello world" example
-    ```go
-    package main
+#
+### Hello world
+```go
+package main
 
-    import (
-        "fmt"
-    )
+import (
+    "fmt"
+)
 
-    func main() {
-        fmt.Println("Hello world!")
-    }
+func main() {
+    fmt.Println("Hello world!")
+}
+```
 
-    funcc otherFunction(x int, y int) (int) { }
-    ```
+#
+### CLI commands
+- to compile a .go file use the `"go build <<filename>>"`
 
-- to compile a .go file use the "go build"
-
-- to compile all the .go files from a directory, use `"go install"`
-
-to compile and run a .go file use `"go run filename"`
+- to compile and run a .go file use `"go run <<filename>>"`
     
-- declaring a variable
-    - explicit form: var x int = 5
-    - short form: x := 5
-        - when using the short form, Go will autodetect the variable type
-    
-- branching
-    ```go
-    if x > 6 {
-        //do something
-    } else if {
-        //do something else
-    } else {
-        //last something
-    }
-    ```
+- to create a project that can compile multiple sources which are imported in a main file run `"go mod init <<project_name>>"`, to initialize a project, and `"go mod tidy"` to realign the configuration with the codebase
 
-- declaring an array 
-    - explicit form: 
+#
+### Packaging
+- each subpackage has to be stored in a different subdirectory with the same name as the subpackage declared in the .go file
+
+- to make a structure accessible from the outside of the package, its name has to start with a capital letter
+    - `func doSomethingPrivate()` - accessible only inside the package where it's declared
+    - `func doSomethingPublic()` - accessible in imports 
+
+#
+### Basic Go
+- Variables
+    - declaring a variable
+        - explicit form
+            ```go
+            var x int = 5
+            ```
+        - short form
+            - with the short form, Go will use type inference to detect the variable type
+            ```go
+            x := 5
+            ```
+
+- Constants
+    - declaring a constant
         ```go
-        var a [5]int
-        a[1] = 5
+        const x = 5
+        ```
+    
+    - cannot be declared using the `:=` syntax
+
+- Operators
+    - the basic operators in go are common to the ones used in C
+        - arithmetic: `+, -, *, /, %, ++, --`
+        - assignment: `=, +=, -=, *=, /=, %=, &=, |=, ^=, >>=, <<=`
+        - comparison: `==, !=, >, <, >=, <=`
+        - logical: `&&, ||, !`
+        - bitwise: `&, |, ^, <<, >>`
+
+- Data types
+    - the basic data types are:
+        - `bool`
+        - `byte` - alias for `uint8`
+        - `uint`
+            - `uint` - represents the default value
+            - `uint8`
+            - `uint16`
+            - `uint32` - default on 32bits systems
+            - `uint64` - default on 64bits systems
+        - `int`
+            - `int` - represents the default value
+            - `int8`
+            - `int16`
+            - `int32` - default on 32bits systems
+            - `int64` - default on 64bits systems
+        - `float`
+            - `float32`
+            - `float64` - default
+        - `complex`
+            - `complex32`
+            - `complex64`
+        - `string`
+
+    - the conversion from one type to another must be explicitly declared, and it has the format Type(value)
+        ```go
+        x : = 3
+        y := float64(3)
+        ```
+
+    - to print the type of an interface the `%T` format can be used
+        ```go
+        v := 42
+        fmt.Printf("v is of type %T\n", v)
+        ```
+
+- Branching
+    - if
+        ```go
+        if x > 6 {
+            //do something
+        } else if {
+            //do something else
+        } else {
+            //last something
+        }
+        ```
+    - switch
+        - unlike other popular languages, the `break` keyword is not used 
+
+        ```go
+        a := 5
+
+        switch a {
+            case 5:
+                fmt.Println("it's 5")
+            case 6:
+                fmt.Println("it's 6")
+            // multi-case condition
+            case 7,8:
+                fmt.Println("it's 7 or 8")
+            default:
+                fmt.Println("it's something else :(")
+        }
+        ```
+
+- Arrays
+    - declaring an array
+        - explicit form:
+            ```go
+            var a [5]int
+            a[1] = 5
+            ```
+            
+        - short form:
+            ```go
+            a := [5]int{1,2,3,4,5}
+            ```
+
+- Slices 
+    - an array with variable length
+        ```go
+        a := []int{}
+        a = append(a, 13)
+
+        // creating a slice from an array
+        array := [5]int{1, 2, 3, 4, 5}
+        slice := array[0:4]
+
+        // a slice can be accessed using the index operator
+        fmt.Println(slice[0])
+
+        // modifying the value inside a slice
+        slice[0] = 100
+
+        // a slice can be appended to another slice using the ... append format
+        slice2 := append(a, slice...)
         ```
         
-    - short form:
+- Maps
+    - syntax
         ```go
-        a := [5]int{1,2,3,4,5}
-        ```
+        // full syntax declaration
+        var newMap = map[string]int{}
+        newMap["element1"] = 1
 
-- slices - creates an array with variable length
-    ```go
-    a := []int{5,4,3,2,1}
-    a = append(a, 13)
-    ```
-        
-- map
-    - syntax: newMap := make(map[key]values)
-        ```go
+        // declaration and assignment
+        newMap2 := map[string]int{"element1": 1}
+
+        // using the make function
         newMap := make(map[string]int)
         newMap["test"] = 5
+
+        // deleting a key:value pair
         delete(newMap, "testing")
         ```
     
-- loops
+    - while maps can store any type as value elements, they can use as keys only types for which the equality operator is defined
+        - Booleans
+        - Numbers
+        - Strings
+        - Arrays
+        - Pointers
+        - Structs
+        - Interfaces (as long as the dynamic type supports equality)
+
+- Loops
     - `for syntax` 
         ```go
         for i := 0; i < 5; i++ { fmt.Println(i) }
@@ -102,34 +227,64 @@ to compile and run a .go file use `"go run filename"`
             fmt.Println("index: ", index, "value", value)
         }
         ```
+
+    - like in most other languages, the `continue` and `break` keywords can be used to skip to the next iteration or break the loop completely
+
+- Functions
+    - can have multiple return values
+        ```go
+        func someFunc(x int) (int, error) { 
+            if x < 0 {
+                return 0, erors.New("Undefined for negative numbers")
+            }
+
+            return math.Sqrt(x), nil
+        }
+
+        func main() {
+            result, err := someFunc(25)
+
+            if err != nil {
+                fmt.Println(err)
+            } else {
+                fmt.Println(result)
+            }
+        }
+        ```
     
-- functions can have multiple return values
-    ```go
-    func main() {
-        result, err := someFnc(25)
-
-        if err != nil {
-            fmt.Println(err)
-        } else {
-            fmt.Println(result)
-        }
-    }
-
-    func someFnc(x int) (int, error) { 
-        if x < 0 {
-            return 0, erors.New("Undefined for negative numbers")
+    - the return values may be named, and they will behave like regular variables declared at the top of the function and returned in the end
+        ```go
+        func someFunc(x int) (y, z int) {
+            y = x * 2
+            z = x * 4
+            return
         }
 
-        return math.Sqrt(x), nil
-    }
-    ```
+        func main() {
+            y, z := someFunc(2)
 
-- structures
+            fmt.Println(y)
+            fmt.Println(z)
+        }
+        ```
+
+    - if two or more parameters have the same type, the type can be written only once
+        ```go
+        func someFnc(x, y, z int) {
+            // do smth
+        }
+        ```
+
+- Structures
     - they are used instead of classes
     - they contain only fields
         ```go
+        package main
+
+        import "fmt"
+
         type person struct {
-            name string,
+            name string
             age int
         }
 
@@ -139,10 +294,88 @@ to compile and run a .go file use `"go run filename"`
         }
         ```
 
-- pointers
+    - a structure can be extended with methods
+        ```go
+        type person struct {
+            name string
+            age int
+        }
+
+        func (p person) GetName() string {
+            return p.name
+        }
+
+        func main() {
+            p := person{name: "Jake", age: 23}
+            fmt.Println(p.GetName())
+        }
+        ```
+
+- Interfaces
+    - names collections of method signatures
+        ```go
+        package main
+
+        import (
+            "fmt"
+            "math"
+        )
+
+        type geometry interface {
+            area() float64
+            perim() float64
+            name() string
+        }
+
+        type rectangle struct {
+            width, length float64
+        }
+
+        func (r rectangle) area() float64 {
+            return r.width * r.length
+        }
+
+        func (r rectangle) perim() float64 {
+            return 2 * r.width + 2 * r.length
+        }
+
+        func (r rectangle) name() string {
+            return "rectangle"
+        }
+
+        type circle struct {
+            radius float64
+        }
+
+        func (c circle) area() float64 {
+            return math.Pi * c.radius * c.radius
+        }
+
+        func (c circle) perim() float64 {
+            return 2 * math.Pi * c.radius
+        }
+
+        func (c circle) name() string {
+            return "circle"
+        }
+
+        func computeSize(g geometry) {
+            fmt.Printf("The area of %s is %f and the perimetre is %f\n", g.name(), g.area(), g.perim())
+        }
+
+        func main() {
+            r := rectangle{width: 10, length: 5}
+            c := circle{5}
+
+            computeSize(r)
+            computeSize(c)
+        }
+        ```
+
+- Pointers
+    - similar to `C` pointers
     - referenced using `&`
     - dereferenced using `*`
-    - similar to `C` pointers
         ```go 
         package main
         import "fmt"
