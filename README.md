@@ -7,7 +7,7 @@ It may seem silly, but it's very helpful when I need to relearn a technology I g
 ### You're welcome to take a look.
 
 - DevOps
-  - [Docker](/devops/docker.md)
+  - [Docker](/devops/Docker.md)
 
 - Front-End
   - [Angular](/front/angular.md)
@@ -15,13 +15,13 @@ It may seem silly, but it's very helpful when I need to relearn a technology I g
   - [Svelte](/front/svelte.md)
 
 - Programming Languages
-  - [Go](/languages/go.md)
+  - [Go](/languages/Go.md)
   - [Java](/languages/java)
     - [Spring AOP](/languages/java/spring_aop)
     - [Java 8 Concepts](/languages/java/java_8_concepts.md)
-  - [Kotlin](/languages/kotlin.md)
+  - [Kotlin](/languages/Kotlin.md)
   - [Python](/languages/python.md)
-  - [Rust](/languages/rust.md)
+  - [Rust](/languages/Rust.md)
 
 - Miscellaneous 
   - [Android Concepts](/misc/android_concepts.md)
