@@ -184,6 +184,7 @@ func main() {
             ```
 
 - Slices 
+    - are similar to a reference to an array
     - an array with variable length
         ```go
         a := []int{}
@@ -202,7 +203,43 @@ func main() {
         // a slice can be appended to another slice using the ... append format
         slice2 := append(a, slice...)
         ```
+
+    - the length and the cap of a slice can be obtained using the built-in functions *len* and *cap*
+        ```go
+        s := [6]int{1, 2, 3, 4, 5, 6}
+        // prints 6, 6
+        fmt.Println(len(s))
+        fmt.Println(cap(s))
+
+        x := s[:0]
+        // prints 0, 6
+        fmt.Println(len(x))
+        fmt.Println(cap(x))
+
+        t := []int{}
+        // prints 0, 0
+        fmt.Println(len(t))
+        fmt.Println(cap(t))
+        ```
         
+    - slices can also be created using the *make* built-in function
+        ```go
+        // make(type, len, cap)
+	    // 	the slice is initialized with 0 values equal to the len parameter
+	    // 	the short version can omit the cap value: make([]int, 5)
+	    b := make([]int, 1, 5)
+	    fmt.Println(b, len(b), cap(b))
+        ```
+
+    - a slice can also be composed of other slices
+        ```go
+	    x := [][]int{[]int{1, 2, 3}, []int{4, 5, 6}}
+	    fmt.Println(x)
+
+	    y := make([][]int, 5)
+	    fmt.Println(y)
+        ```
+
 - Maps
     - syntax
         ```go
@@ -251,6 +288,11 @@ func main() {
 
         for index, value := range arr {
             fmt.Println("index: ", index, "value", value)
+        }
+
+        // values can be skipped using the _ notation
+        for _, value := range arr {
+            fmt.Println("value", value)
         }
         ```
 
@@ -301,6 +343,44 @@ func main() {
         }
         ```
 
+    - functions are first-class citizens, so they can be passed around like any other variables
+        ```go
+        func calculate(funcParam func(float64, float64) float64) float64 {
+            fmt.Println("Executing the received function with parameters 5 and 5")
+            return funcParam(5, 5)
+        }
+
+        func main() {
+            power := func(x float64, y float64) float64 {
+                return math.Pow(x, y)
+            }
+
+            fmt.Println(power(2, 2))
+            fmt.Println(calculate(power))
+        }
+        ```
+
+    - a function can also be a closure, which means that it will refer to variables defined outside its body, being bound to them
+        ```go
+        func mySumClosure() func(int) int {
+            sum := 0
+            return func(x int) int {
+                sum += x
+                return sum
+            }
+        }
+
+        func main() {
+            myClosure := mySumClosure()
+
+            x := myClosure(1)
+            y := myClosure(2)
+            z := myClosure(3)
+
+            fmt.Println(x, y, z)
+        }
+        ```
+
 - Structures
     - they are used instead of classes
     - they contain only fields
@@ -318,6 +398,26 @@ func main() {
             p := person{name: "Jake", age: 23}
             fmt.Println(p.age)
         }
+        ```
+
+    - to make references to structures easier to read, dereferencing can be made without using explicitly the * symbol
+        ```go
+        package main
+
+        import "fmt"
+
+        type person struct {
+            name string
+            age int
+        }
+
+        func main() {
+            p := person{name: "Jake", age: 23}
+            pt := &p
+
+            // transformed automatically to (*pt).age
+            fmt.Println(pt.age)
+        }  
         ```
 
     - a structure can be extended with methods
