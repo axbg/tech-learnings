@@ -127,7 +127,7 @@ func main() {
             }
             ```
 
-        - the if statement can start with a short assig statement that is executed before the condition is checked
+        - the if statement can start with a short assign statement that is executed before the condition is checked
             ```go
             if x := 5; x == 5 {
                 fmt.Printf("it's 5: %d\n", x)
@@ -303,7 +303,7 @@ func main() {
         ```go
         func someFunc(x int) (int, error) { 
             if x < 0 {
-                return 0, erors.New("Undefined for negative numbers")
+                return 0, errors.New("Undefined for negative numbers")
             }
 
             return math.Sqrt(x), nil
@@ -320,7 +320,7 @@ func main() {
         }
         ```
     
-    - the return values may be named, and they will behave like regular variables declared at the top of the function and returned in the end
+    - the return values may be named, and they will behave like regular variables declared at the top of the function and returned at the end
         ```go
         func someFunc(x int) (y, z int) {
             y = x * 2
@@ -378,6 +378,51 @@ func main() {
             z := myClosure(3)
 
             fmt.Println(x, y, z)
+        }
+        ```
+
+    - a function can be written to work on multiple types using type parameters
+        ```go
+        package main
+
+        import "fmt"
+
+        // Index returns the index of x in s, or -1 if not found.
+        func Index[T comparable](s []T, x T) int {
+            for i, v := range s {
+                // v and x are type T, which has the comparable
+                // constraint, so we can use == here.
+                if v == x {
+                    return i
+                }
+            }
+            return -1
+        }
+
+        func main() {
+            // Index works on a slice of ints
+            si := []int{10, 20, 15, -10}
+            fmt.Println(Index(si, 15))
+
+            // Index also works on a slice of strings
+            ss := []string{"foo", "bar", "baz"}
+            fmt.Println(Index(ss, "hello"))
+        }
+        ```
+
+- Generic types
+    - in addition to generic functions, Go also supports generic types
+        ```go
+        package main
+
+        // List represents a singly-linked list that holds
+        // values of any type.
+        type List[T any] struct {
+            next *List[T]
+            val  T
+        }
+
+        func main() {
         }
         ```
 
@@ -529,4 +574,156 @@ func main() {
 
             fmt.Println(*pt)
         }
+        ```
+
+- Goroutines
+    - it's a lightweight thread management structure managed by Go
+
+    - invoked with the keyword **go**
+        ```go
+        package main
+
+        import (
+            "fmt"
+            "time"
+        )
+
+        func say(s string) {
+            for i := 0; i < 5; i++ {
+                time.Sleep(100 * time.Millisecond)
+                fmt.Println(s)
+            }
+        }
+
+        func main() {
+            go say("world")
+            say("hello")
+        }
+        ```
+    
+    - the **select** statement lets a goroutine wait on multiple communication operations, and blocks until one of its cases can run (chooses one randomly if multiple are ready at once)
+        ```go
+        package main
+
+        import "fmt"
+
+        func fibonacci(c, quit chan int) {
+            x, y := 0, 1
+            for {
+                select {
+                case c <- x:
+                    x, y = y, x+y
+                case <-quit:
+                    fmt.Println("quit")
+                    return
+                }
+            }
+        }
+
+        func main() {
+            c := make(chan int)
+            quit := make(chan int)
+            go func() {
+                for i := 0; i < 10; i++ {
+                    fmt.Println(<-c)
+                }
+                quit <- 0
+            }()
+            fibonacci(c, quit)
+        }
+        ```
+    
+    - to synchronize multiple goroutines, Go provides the mutex structure which can be used to achieve mutual exclusion
+        ```go
+        package main
+
+        import (
+            "fmt"
+            "sync"
+            "time"
+        )
+
+        // SafeCounter is safe to use concurrently.
+        type SafeCounter struct {
+            mu sync.Mutex
+            v  map[string]int
+        }
+
+        // Inc increments the counter for the given key.
+        func (c *SafeCounter) Inc(key string) {
+            c.mu.Lock()
+            // Lock so only one goroutine at a time can access the map c.v.
+            c.v[key]++
+            c.mu.Unlock()
+        }
+
+        // Value returns the current value of the counter for the given key.
+        func (c *SafeCounter) Value(key string) int {
+            c.mu.Lock()
+            // Lock so only one goroutine at a time can access the map c.v.
+            defer c.mu.Unlock()
+            return c.v[key]
+        }
+
+        func main() {
+            c := SafeCounter{v: make(map[string]int)}
+            for i := 0; i < 1000; i++ {
+                go c.Inc("somekey")
+            }
+
+            time.Sleep(time.Second)
+            fmt.Println(c.Value("somekey"))
+        }
+        ```
+
+- Channels
+    - a typed structure that can be used to send and receive messages
+
+    - invoked with the symbol **<-**, the arrow indicating the direction in which the data flows
+        ```go
+        package main
+
+        import "fmt"
+
+        func sum(s []int, c chan int) {
+            sum := 0
+            for _, v := range s {
+                sum += v
+            }
+            c <- sum // send sum to c
+        }
+
+        func main() {
+            s := []int{7, 2, 8, -9, 4, 0}
+
+            // Like maps and slices, channels must be created before use:
+            c := make(chan int)
+
+            go sum(s[:len(s)/2], c)
+            go sum(s[len(s)/2:], c)
+            x, y := <-c, <-c // receive from c
+
+            fmt.Println(x, y, x+y)
+        }
+        ```
+
+    - channels can also be buffered, accepting a limited number of values even when there is no corresponding receiver for those values already established
+        - buffered channels are blocking only when the channel is full (for the sender) or when the channel is empty (for the receiver)
+        ```go
+        ch := make(chan int, 100)
+        ```
+    
+    - a sender can close a channel to indicate that no more values will be sent, while receivers can test whether a channel has been closed by assigning a second parameter to the receive expression
+        ```go
+        // ex1
+        // ok is false if there are no more values to receive and the channel is closed
+        v, ok := <-ch
+
+        // ex2
+        // the loop for i := range c receives values from the channel repeatedly until it is closed.
+        c := make(chan int, 10)
+        // ...
+        for i := range c {
+		    fmt.Println(i)
+	    }
         ```
