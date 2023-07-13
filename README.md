@@ -17,7 +17,6 @@ It may seem silly, but it's very helpful when I need to relearn a technology I g
 - Programming Languages
   - [Go](/languages/Go.md)
   - [Java](/languages/java)
-    - [Spring AOP](/languages/java/spring_aop)
     - [Java 8 Concepts](/languages/java/java_8_concepts.md)
   - [Kotlin](/languages/Kotlin.md)
   - [Python](/languages/python.md)
